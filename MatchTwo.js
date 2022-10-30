@@ -23,81 +23,151 @@ let defaultTheme = {
 
 let scoreboards = {
     small: {
-        htmlTableID: "smallBoardScoreboardTable",
-        records: {
-            easy: {
-
+        easy: {
+            htmlTableID: "smallBoardEasyTable",
+            records: [
+            {
+                time: 30000,
+                clicks: 20,
+                nickname: "SmallEasy1"
             },
-            intermediate: [
-                {
-                    time: 30000,
-                    clicks: 20,
-                    nickname: "SI1"
-                }
-            ],
-            hard: {
-
+            {
+                time: 29000,
+                clicks: 25,
+                nickname: "SmallEasy2"
             }
-        }
+            ]
+        },
+        intermediate: {
+            htmlTableID: "smallBoardIntermediateTable",
+            records: [
+            {
+                time: 30000,
+                clicks: 20,
+                nickname: "SmallIntermediate1"
+            },
+            {
+                time: 29000,
+                clicks: 25,
+                nickname: "SmallIntermediate2"
+            }
+            ]
+        },
+        hard: {
+            htmlTableID: "smallBoardHardTable",
+            records: [
+            {
+                time: 30000,
+                clicks: 20,
+                nickname: "SmallHard1"
+            },
+            {
+                time: 29000,
+                clicks: 25,
+                nickname: "SmallHard2"
+            }
+            ]
+        },
     },
     medium: {
-        htmlTableID: "mediumBoardScoreboardTable",
-        easy: [
-            {
-                time: 30000,
-                clicks: 20,
-                nickname: "ME1"
-            },
-            {
-                time: 29000,
-                clicks: 25,
-                nickname: "ME2"
-            }
-        ],
-        intermediate: [
-            {
-                time: 30000,
-                clicks: 20,
-                nickname: "MI1"
-            },
-            {
-                time: 29000,
-                clicks: 25,
-                nickname: "MI2"
-            }
-        ],
-        hard: [
-            {
-                time: 30000,
-                clicks: 20,
-                nickname: "MH1"
-            },
-            {
-                time: 29000,
-                clicks: 25,
-                nickname: "MH2"
-            }
-        ],
-    },
-    large: {
-        htmlTableID: "largeBoardScoreboardTable",
         easy: {
-
-        },
-        intermediate: [
+            htmlTableID: "mediumBoardEasyTable",
+            records: [
             {
                 time: 30000,
                 clicks: 20,
-                nickname: "LI1"
+                nickname: "MediumEasy1"
+            },
+            {
+                time: 29000,
+                clicks: 25,
+                nickname: "MediumEasy2"
             }
-        ],
+            ]
+        },
+        intermediate: {
+            htmlTableID: "mediumBoardIntermediateTable",
+            records: [
+            {
+                time: 30000,
+                clicks: 20,
+                nickname: "MediumIntermediate1"
+            },
+            {
+                time: 29000,
+                clicks: 25,
+                nickname: "MediumIntermediate2"
+            }
+            ]
+        },
         hard: {
-
-        }
+            htmlTableID: "mediumBoardHardTable",
+            records: [
+            {
+                time: 30000,
+                clicks: 20,
+                nickname: "MediumHard1"
+            },
+            {
+                time: 29000,
+                clicks: 25,
+                nickname: "MediumHard2"
+            }
+            ]
+        },
+    },
+    large:{
+        easy: {
+            htmlTableID: "largeBoardEasyTable",
+            records: [
+            {
+                time: 30000,
+                clicks: 20,
+                nickname: "LargeEasy1"
+            },
+            {
+                time: 29000,
+                clicks: 25,
+                nickname: "LargeEasy2"
+            }
+            ]
+        },
+        intermediate: {
+            htmlTableID: "largeBoardIntermediateTable",
+            records: [
+            {
+                time: 30000,
+                clicks: 20,
+                nickname: "largeIntermediate1"
+            },
+            {
+                time: 29000,
+                clicks: 25,
+                nickname: "largeIntermediate2"
+            }
+            ]
+        },
+        hard: {
+            htmlTableID: "largeBoardHardTable",
+            records: [
+            {
+                time: 30000,
+                clicks: 20,
+                nickname: "largeHard1"
+            },
+            {
+                time: 29000,
+                clicks: 25,
+                nickname: "largeHard2"
+            }
+            ]
+        },
     }
 }
 
-function parseToTable(scoreboardHtmlID, records){
+function parseToTable(scoreboard){
+    let scoreboardHtmlID = scoreboard.htmlTableID
+    let records = scoreboard.records;
     records.forEach(element => {
 
         let tableRecord = document.createElement("tr");
@@ -119,17 +189,19 @@ function parseToTable(scoreboardHtmlID, records){
 }
 
 function parseSecoreboard(scoreboard){
-    parseToTable(scoreboard.htmlTableID, scoreboard.easy);
-    parseToTable(scoreboard.htmlTableID, scoreboard.intermediate);
-    parseToTable(scoreboard.htmlTableID, scoreboard.hard);
-    
+    parseToTable(scoreboard.easy);
+    parseToTable(scoreboard.intermediate);
+    parseToTable(scoreboard.hard);
     
 }
 
-function populateScoreBoards(scoreboardName){
+function populateScoreBoards(){
+    let smallSB = scoreboards.small;
+    parseSecoreboard(smallSB);
     let mediumSB = scoreboards.medium;
     parseSecoreboard(mediumSB);
-    
+    let largeSB = scoreboards.large;
+    parseSecoreboard(largeSB);
 }
 
 function clickCard(cardID){
@@ -323,4 +395,4 @@ function createGameBoard(size = 'm', difficulty = 'i'){
 createGameBoard(boardSize, gameDifficulty);
 let cardIDs = getAllCardIDs();
 assignOnClickToAllCards(cardIDs);
-populateScoreBoards("mediumBoardScoreboard");
+populateScoreBoards();

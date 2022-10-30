@@ -53,6 +53,24 @@ function clickCard(cardID){
     
 }
 
+function getArrayOfEmojis(numberOfEmojis, theme = defaultTheme){
+    let arrayOfEmojis = [];
+    if(theme == defaultTheme){
+        let range = (defaultTheme.end+1) - defaultTheme.start;
+        while(arrayOfEmojis.length < numberOfEmojis){
+            let candidateEmoji = Math.floor(Math.random()*range) + defaultTheme.start;
+            /* If emoji isn't alerady in the list(is't a duplicate), add it to the list of emojis to use */
+            console.log(arrayOfEmojis);
+            if(arrayOfEmojis.indexOf(candidateEmoji) == -1){
+                arrayOfEmojis.push(candidateEmoji);
+            }
+            
+        }
+    }
+    console.log("Emojis chosen(len["+arrayOfEmojis.length+"]): "+arrayOfEmojis);
+    return arrayOfEmojis;
+}
+
 function checkIfWon(){
     window.alert("You won!");
 }
@@ -96,9 +114,7 @@ function unflipCards(){
 
 
 function createGameBoard(size = 'm', difficulty = 'm'){
-    let IDsArr = [];
-    
-    let children = GameGrid.children;
+    //setup game board size
     if(size == 'm'){
         numOfCards = 12;
     }
@@ -111,25 +127,16 @@ function createGameBoard(size = 'm', difficulty = 'm'){
         GameGrid.appendChild(card);
     }
 
+    //set up game difficulty
     let cardIDs = getAllCardIDs();
-    
+    let numOfImgs = 0;
     if(difficulty == 'm'){
         matchesRequired = cardIDs.length/2;
+        numOfImgs = cardIDs.length/2;
     }
-    let numOfImgs = cardIDs.length/2;
-    console.log("Number of emojis to use: "+ numOfImgs);
     //Assign emoji images to each of the cards
-    let emojisToUse = [];
-    let range = (defaultTheme.end+1) - defaultTheme.start;
-    while(emojisToUse.length < numOfImgs){
-        let candidateEmoji = Math.floor(Math.random()*range) + defaultTheme.start;
-        /* If emoji isn't alerady in the list(is't a duplicate), add it to the list of emojis to use */
-        console.log(emojisToUse);
-        if(emojisToUse.indexOf(candidateEmoji) == -1){
-            emojisToUse.push(candidateEmoji);
-        }
-        console.log("Emojis chosen(len["+emojisToUse.length+"]): "+emojisToUse);
-    }
+    let emojisToUse = getArrayOfEmojis(numOfImgs);
+    
     for (let index = 0; index < emojisToUse.length; index++) {
         console.log("Assigning emoji: '"+ String.fromCodePoint(emojisToUse[index]) +"' to: ");
         var cardIndex = Math.floor(Math.random()*cardIDs.length);
@@ -151,14 +158,3 @@ function createGameBoard(size = 'm', difficulty = 'm'){
 createGameBoard();
 let cardIDs = getAllCardIDs();
 assignOnClickToAllCards(cardIDs);
-
-/*
-let CID = "C1";
-let C1 = document.getElementById(CID);
-document.getElementById(CID).onclick = function() {
-    clickCard(CID);
-};
-*/
-
-
-//setTimeout(this.updateLogic(), 100);

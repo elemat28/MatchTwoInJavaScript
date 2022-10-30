@@ -37,7 +37,7 @@ let scoreboards = {
                 nickname: "SmallIntermediate1"
             },
             {
-                time: 29000,
+                time: 35000,
                 clicks: 25,
                 nickname: "SmallIntermediate2"
             }
@@ -52,7 +52,7 @@ let scoreboards = {
                 nickname: "SmallHard1"
             },
             {
-                time: 29000,
+                time: 35000,
                 clicks: 25,
                 nickname: "SmallHard2"
             }
@@ -69,7 +69,7 @@ let scoreboards = {
                 nickname: "MediumEasy1"
             },
             {
-                time: 29000,
+                time: 35000,
                 clicks: 25,
                 nickname: "MediumEasy2"
             }
@@ -84,7 +84,7 @@ let scoreboards = {
                 nickname: "MediumIntermediate1"
             },
             {
-                time: 29000,
+                time: 35000,
                 clicks: 25,
                 nickname: "MediumIntermediate2"
             }
@@ -99,7 +99,7 @@ let scoreboards = {
                 nickname: "MediumHard1"
             },
             {
-                time: 29000,
+                time: 35000,
                 clicks: 25,
                 nickname: "MediumHard2"
             }
@@ -116,7 +116,7 @@ let scoreboards = {
                 nickname: "LargeEasy1"
             },
             {
-                time: 29000,
+                time: 35000,
                 clicks: 25,
                 nickname: "LargeEasy2"
             }
@@ -131,7 +131,7 @@ let scoreboards = {
                 nickname: "largeIntermediate1"
             },
             {
-                time: 29000,
+                time: 35000,
                 clicks: 25,
                 nickname: "largeIntermediate2"
             }
@@ -146,7 +146,7 @@ let scoreboards = {
                 nickname: "largeHard1"
             },
             {
-                time: 29000,
+                time: 35000,
                 clicks: 25,
                 nickname: "largeHard2"
             }
@@ -155,15 +155,15 @@ let scoreboards = {
     }
 }
 
-let tryGetSession = sessionStorage.getItem('scoreboardsArray');
-if(tryGetSession == null) {
-    console.log("sessionStorage not found!");
+let tryGetLocal = localStorage.getItem('scoreboardsArray');
+if(tryGetLocal == null) {
+    console.log("localStorage not found!");
     console.log("Inserting placeholder scoreboards");
-    sessionStorage.setItem('scoreboardsArray', JSON.stringify(scoreboards))
+    localStorage.setItem('scoreboardsArray', JSON.stringify(scoreboards))
 } else {
-    console.log("sessionStorage found!");
+    console.log("localStorage found!");
     console.log("loading storagescoreboard into the system");
-    scoreboards = JSON.parse(sessionStorage.getItem('scoreboardsArray'));
+    scoreboards = JSON.parse(localStorage.getItem('scoreboardsArray'));
 }
 
 
@@ -340,15 +340,12 @@ function getCurrentLeaderboard(){
     if (gameDifficulty == 'e') {
         return leaderboard.easy;
     } else if (gameDifficulty == 'i'){
-        console.log("dop1");
         return leaderboard.intermediate;
         
     } else if (gameDifficulty == 'h'){
         return leaderboard.hard;
     }
     else {return null};
-    console.log("dop4");
-    return leaderboard;
 }
 
 function addToLeaderboard(leaderboard, index, time, clicks, name){
@@ -395,7 +392,7 @@ function addToLeaderboard(leaderboard, index, time, clicks, name){
     }
     console.log("got to end of add to leaderboard");
     console.log(scoreboards);
-    sessionStorage.setItem('scoreboardsArray', JSON.stringify(scoreboards));
+    localStorage.setItem('scoreboardsArray', JSON.stringify(scoreboards));
 }
 
 function endTheGame(){
@@ -403,8 +400,9 @@ function endTheGame(){
     let newIndex = checkIfLeaderboardWorthy(getCurrentLeaderboard(),gameTime);
     console.log("NEW INDEX = "+ newIndex);
     if(newIndex != -1){
-        let userName = prompt("You were fast enough to get onto the scorboard! Position: "+ newIndex+1+". Please enter Your name, or don't, to be recorded as anonymous");
-        if(userName == null){
+        let leadboardPosition = newIndex + 1;
+        let userName = prompt("You were fast enough to get onto the scorboard! Position: "+ leadboardPosition +". Please enter Your name, or don't, to be recorded as anonymous");
+        if(userName == null || userName == ""){
             userName = "Anonymous";
         }
     console.log("running add to scoreboard");

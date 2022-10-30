@@ -30,6 +30,13 @@ scoreboards {
 .scoreBoard h4 {
     text-align: center;
 }
+table {
+    width: 100%;
+}
+tdh, td {
+    border: 1px solid #999;
+    text-align: center;
+}
 
 #CardGrid {
 /*Container for the game board*/

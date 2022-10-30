@@ -42,9 +42,18 @@ let scoreboards = {
     },
     medium: {
         htmlTableID: "mediumBoardScoreboardTable",
-        easy: {
-
-        },
+        easy: [
+            {
+                time: 30000,
+                clicks: 20,
+                nickname: "ME1"
+            },
+            {
+                time: 29000,
+                clicks: 25,
+                nickname: "ME2"
+            }
+        ],
         intermediate: [
             {
                 time: 30000,
@@ -57,9 +66,18 @@ let scoreboards = {
                 nickname: "MI2"
             }
         ],
-        hard: {
-
-        }
+        hard: [
+            {
+                time: 30000,
+                clicks: 20,
+                nickname: "MH1"
+            },
+            {
+                time: 29000,
+                clicks: 25,
+                nickname: "MH2"
+            }
+        ],
     },
     large: {
         htmlTableID: "largeBoardScoreboardTable",
@@ -78,25 +96,8 @@ let scoreboards = {
         }
     }
 }
-function createTableRecord(tableRecord, value){
-    let recordContent = document.createElement("td");
-    recordContent.textContent = value;
-    tableRecord.appendChild(recordContent);
-}
-function printElementToTable(htmlTableID, element){
-    console.log(element);
-    let tableRecord = document.createElement("tr");
-    element.forEach(value => {
-        createTableRecord(tableRecord, value);
-    });
-    
-    document.getElementById(htmlTableID).appendChild(tableRecord);
-}
 
-function parseSecoreboard(scoreboard){
-    let records = scoreboard.intermediate;
-    
-    
+function parseToTable(scoreboardHtmlID, records){
     records.forEach(element => {
 
         let tableRecord = document.createElement("tr");
@@ -113,8 +114,15 @@ function parseSecoreboard(scoreboard){
         recordUsername.textContent = element.nickname;
         tableRecord.appendChild(recordUsername);
 
-        document.getElementById(scoreboard.htmlTableID).appendChild(tableRecord);
+        document.getElementById(scoreboardHtmlID).appendChild(tableRecord);
     });
+}
+
+function parseSecoreboard(scoreboard){
+    parseToTable(scoreboard.htmlTableID, scoreboard.easy);
+    parseToTable(scoreboard.htmlTableID, scoreboard.intermediate);
+    parseToTable(scoreboard.htmlTableID, scoreboard.hard);
+    
     
 }
 

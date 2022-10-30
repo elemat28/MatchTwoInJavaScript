@@ -1,4 +1,6 @@
 console.log("Hello World!");
+let boardSize = 'm';
+let gameDifficulty = 'm';
 let currentClick = null;
 let firstClicked = null;
 let secondClicked = null;
@@ -7,15 +9,38 @@ let matchesRequired = 6;
 let matchesCurrently = 0;
 let timeout = null;
 let timeoutMs = 1500;
+let gameTime = 0;
+let interval;
+let intervalStep = 100;
+let clicksThisRound = 0;
 let GameGrid = document.getElementById("CardGrid");
+let timerBox = document.getElementById("timerBox");
+let numOfClicksBox = document.getElementById("numOfClicksBox");
 let defaultTheme = {start: 128512,
                     end: 128580};
-//console.log(document.getElementById("C1").textContent);
+
+let mediumBoardScores = {
+    medium: {
+        1:{
+            time: 30000,
+            clicks: 20,
+            nickname: "MMM"
+        }
+    }
+}
 
 function clickCard(cardID){
+    
     //ignore the click if card already facing up
     if(document.getElementById(cardID).firstChild.style.display == "inline"){
         return;
+    }
+
+    clicksThisRound +=1;
+    numOfClicksBox.lastElementChild.textContent = clicksThisRound;
+
+    if(interval == null) {
+        interval = setInterval(updateTimer, intervalStep, intervalStep);
     }
     //unflip cards if next click happens before previously clicked cards dissapear on their own
     if(secondClicked != null){
@@ -71,8 +96,35 @@ function getArrayOfEmojis(numberOfEmojis, theme = defaultTheme){
     return arrayOfEmojis;
 }
 
-function checkIfWon(){
+function msToMinAndSecAndMillisec(ms){
+    let minutes = Math.floor(ms/60000); //1minute == 60,000ms
+    ms = ms%60000;
+    let seconds = Math.floor(ms/1000);
+    ms = ms%1000;
+    let tenthsOfASeconds = Math.floor(ms/100);
+    ms = ms%100;
+    return [ms, tenthsOfASeconds, seconds, minutes];
+}
+
+function updateTimer(intervalStep){
+    gameTime += intervalStep;
+    let humanReadableTime = msToMinAndSecAndMillisec(gameTime);
+    if(humanReadableTime[3] < 10){
+        humanReadableTime[3] = "0"+humanReadableTime[3];
+
+    }
+    if(humanReadableTime[2] < 10){
+        humanReadableTime[2] = "0"+humanReadableTime[2];
+
+    }
+    timerBox.lastElementChild.textContent = humanReadableTime[3]+":"+humanReadableTime[2]+"."+humanReadableTime[1];
+
+}
+
+
+function endTheGame(){
     window.alert("You won!");
+    clearInterval(interval);
 }
 
 function printContentToConsole(text){
@@ -95,7 +147,7 @@ function createOnClick(ID) {
         clickCard(ID);
         console.log("matches currently vs required: "+ matchesCurrently + " : " + matchesRequired);
         if(matchesCurrently == matchesRequired) {
-            timeout = setTimeout(checkIfWon, 75);
+            timeout = setTimeout(endTheGame, 75);
         }
     };
 
@@ -115,8 +167,17 @@ function unflipCards(){
 
 function createGameBoard(size = 'm', difficulty = 'm'){
     //setup game board size
-    if(size == 'm'){
+    if (size == 's'){
+        GameGrid.style.gridTemplateColumns = "1fr 1fr 1fr";
+        numOfCards = 6;
+    }
+    else if(size == 'm'){
+        GameGrid.style.gridTemplateColumns = "1fr 1fr 1fr 1fr";
         numOfCards = 12;
+    }
+    else if(size == 'l'){
+        GameGrid.style.gridTemplateColumns = "1fr 1fr 1fr 1fr 1fr";
+        numOfCards = 20;
     }
     for (let index = 0; index < numOfCards; index++) {
         //const element = array[index];
@@ -154,7 +215,9 @@ function createGameBoard(size = 'm', difficulty = 'm'){
         
         
     }
+    
 }
-createGameBoard();
+createGameBoard(boardSize, gameDifficulty);
+
 let cardIDs = getAllCardIDs();
 assignOnClickToAllCards(cardIDs);

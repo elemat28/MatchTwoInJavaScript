@@ -13,6 +13,7 @@ let gameTime = 0;
 let interval;
 let intervalStep = 100;
 let clicksThisRound = 0;
+let numberOfScoresToKeep = 10;
 let GameGrid = document.getElementById("CardGrid");
 let timerBox = document.getElementById("timerBox");
 let numOfClicksBox = document.getElementById("numOfClicksBox");
@@ -20,22 +21,11 @@ let defaultTheme = {
     start: 128512,
     end: 128580
 };
-
 let scoreboards = {
     small: {
         easy: {
             htmlTableID: "smallBoardEasyTable",
             records: [
-            {
-                time: 30000,
-                clicks: 20,
-                nickname: "SmallEasy1"
-            },
-            {
-                time: 29000,
-                clicks: 25,
-                nickname: "SmallEasy2"
-            }
             ]
         },
         intermediate: {
@@ -165,9 +155,27 @@ let scoreboards = {
     }
 }
 
+let tryGetSession = sessionStorage.getItem('scoreboardsArray');
+if(tryGetSession == null) {
+    console.log("sessionStorage not found!");
+    console.log("Inserting placeholder scoreboards");
+    sessionStorage.setItem('scoreboardsArray', JSON.stringify(scoreboards))
+} else {
+    console.log("sessionStorage found!");
+    console.log("loading storagescoreboard into the system");
+    scoreboards = JSON.parse(sessionStorage.getItem('scoreboardsArray'));
+}
+
+
 function parseToTable(scoreboard){
     let scoreboardHtmlID = scoreboard.htmlTableID
     let records = scoreboard.records;
+    let tableElement = document.getElementById(scoreboardHtmlID);
+    let first = tableElement.firstElementChild.textContent;
+    let lastElement = tableElement.lastChild.textContent;
+    while(tableElement.firstElementChild.textContent != tableElement.lastElementChild.textContent){
+        tableElement.removeChild(tableElement.lastChild);
+    } 
     records.forEach(element => {
 
         let tableRecord = document.createElement("tr");
@@ -186,6 +194,7 @@ function parseToTable(scoreboard){
 
         document.getElementById(scoreboardHtmlID).appendChild(tableRecord);
     });
+    lastElement = tableElement.lastChild.textContent;
 }
 
 function parseSecoreboard(scoreboard){
@@ -205,7 +214,7 @@ function populateScoreBoards(){
 }
 
 function clickCard(cardID){
-    
+    console.log(getCurrentLeaderboard());
     //ignore the click if card already facing up
     if(document.getElementById(cardID).firstChild.style.display == "inline"){
         return;
@@ -296,9 +305,116 @@ function updateTimer(intervalStep){
 
 }
 
+function checkIfLeaderboardWorthy(scoreboard, time){
+    let recordsArray = scoreboard.records;
+    //compare game time to the times on the scoreboard, if the gametime is shorter, return where it would index on the list;
+    for (let index = 0; index < recordsArray.length; index++) {
+        console.log("compareTime: "+recordsArray[index].time+ " vs "+time);
+        if(recordsArray[index].time > time){
+            
+            return index;
+        }
+    }
+    //if there are empty spaces left, return the next available place to add the record at
+    console.log("compareLen: "+recordsArray.length+ " vs "+numberOfScoresToKeep);
+    if(recordsArray.length < numberOfScoresToKeep){
+        return recordsArray.length;
+    }
+    else {
+        //if the time isn't worthy of being on a table, return -1;
+        return -1;
+    }
+}
+
+function getCurrentLeaderboard(){
+    let leaderboard = null;
+    if (boardSize == 's'){
+        leaderboard = scoreboards.small;
+    } else if(boardSize == 'm') {
+        leaderboard = scoreboards.medium;
+    } else if(boardSize == 'l') {
+        leaderboard == scoreboards.large;
+    }
+    else {return null}
+
+    if (gameDifficulty == 'e') {
+        return leaderboard.easy;
+    } else if (gameDifficulty == 'i'){
+        console.log("dop1");
+        return leaderboard.intermediate;
+        
+    } else if (gameDifficulty == 'h'){
+        return leaderboard.hard;
+    }
+    else {return null};
+    console.log("dop4");
+    return leaderboard;
+}
+
+function addToLeaderboard(leaderboard, index, time, clicks, name){
+    let newRecord = {
+        time: time,
+        clicks: clicks,
+        nickname: name
+    }
+    console.log("PRe error");
+    console.log(leaderboard);
+    leaderboard.records.splice(index, 0, newRecord);
+    if(leaderboard.records.length > numberOfScoresToKeep){
+        leaderboard.recordClicks = leaderboard.slice(0,numberOfScoresToKeep);
+    }
+
+    if (boardSize == 's'){
+        if (gameDifficulty == 'e') {
+        scoreboards.small.easy = leaderboard;
+        } else if (gameDifficulty == 'i'){
+        console.log("adding new score to intermidiate");
+        scoreboards.small.intermediate = leaderboard;
+        } else if (gameDifficulty == 'h'){
+        scoreboards.small.hard = leaderboard;
+        }
+    } else if(boardSize == 'm') {
+        if (gameDifficulty == 'e') {
+        scoreboards.medium.easy = leaderboard;
+        } else if (gameDifficulty == 'i'){
+        console.log("adding new score to intermidiate");
+        scoreboards.medium.intermediate = leaderboard;
+        } else if (gameDifficulty == 'h'){
+        scoreboards.medium.hard = leaderboard;
+        }
+    } else if(boardSize == 'l') {
+        
+        if (gameDifficulty == 'e') {
+            scoreboards.large.easy = leaderboard;
+            } else if (gameDifficulty == 'i'){
+            console.log("adding new score to intermidiate");
+            scoreboards.large.intermediate = leaderboard;
+            } else if (gameDifficulty == 'h'){
+            scoreboards.large.hard = leaderboard;
+            }
+    }
+    console.log("got to end of add to leaderboard");
+    console.log(scoreboards);
+    sessionStorage.setItem('scoreboardsArray', JSON.stringify(scoreboards));
+}
+
 function endTheGame(){
-    window.alert("You won!");
     clearInterval(interval);
+    let newIndex = checkIfLeaderboardWorthy(getCurrentLeaderboard(),gameTime);
+    console.log("NEW INDEX = "+ newIndex);
+    if(newIndex != -1){
+        let userName = prompt("You were fast enough to get onto the scorboard! Position: "+ newIndex+1+". Please enter Your name, or don't, to be recorded as anonymous");
+        if(userName == null){
+            userName = "Anonymous";
+        }
+    console.log("running add to scoreboard");
+    addToLeaderboard(getCurrentLeaderboard(), newIndex, gameTime, clicksThisRound, userName);
+    console.log("result:")
+    console.log(scoreboards);
+} else{
+    window.alert("You won!");
+    }
+    populateScoreBoards();
 }
 
 function printContentToConsole(text){

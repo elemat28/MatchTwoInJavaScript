@@ -1,6 +1,6 @@
 console.log("Hello World!");
-let boardSize = 'm';
-let gameDifficulty = 'm';
+let boardSize = 'm'; // s = small, m = medium, l = large
+let gameDifficulty = 'i' //e = easy, i = intermediate, h = hard;
 let currentClick = null;
 let firstClicked = null;
 let secondClicked = null;
@@ -16,17 +16,112 @@ let clicksThisRound = 0;
 let GameGrid = document.getElementById("CardGrid");
 let timerBox = document.getElementById("timerBox");
 let numOfClicksBox = document.getElementById("numOfClicksBox");
-let defaultTheme = {start: 128512,
-                    end: 128580};
+let defaultTheme = {
+    start: 128512,
+    end: 128580
+};
 
-let mediumBoardScores = {
+let scoreboards = {
+    small: {
+        htmlTableID: "smallBoardScoreboardTable",
+        records: {
+            easy: {
+
+            },
+            intermediate: [
+                {
+                    time: 30000,
+                    clicks: 20,
+                    nickname: "SI1"
+                }
+            ],
+            hard: {
+
+            }
+        }
+    },
     medium: {
-        1:{
-            time: 30000,
-            clicks: 20,
-            nickname: "MMM"
+        htmlTableID: "mediumBoardScoreboardTable",
+        easy: {
+
+        },
+        intermediate: [
+            {
+                time: 30000,
+                clicks: 20,
+                nickname: "MI1"
+            },
+            {
+                time: 29000,
+                clicks: 25,
+                nickname: "MI2"
+            }
+        ],
+        hard: {
+
+        }
+    },
+    large: {
+        htmlTableID: "largeBoardScoreboardTable",
+        easy: {
+
+        },
+        intermediate: [
+            {
+                time: 30000,
+                clicks: 20,
+                nickname: "LI1"
+            }
+        ],
+        hard: {
+
         }
     }
+}
+function createTableRecord(tableRecord, value){
+    let recordContent = document.createElement("td");
+    recordContent.textContent = value;
+    tableRecord.appendChild(recordContent);
+}
+function printElementToTable(htmlTableID, element){
+    console.log(element);
+    let tableRecord = document.createElement("tr");
+    element.forEach(value => {
+        createTableRecord(tableRecord, value);
+    });
+    
+    document.getElementById(htmlTableID).appendChild(tableRecord);
+}
+
+function parseSecoreboard(scoreboard){
+    let records = scoreboard.intermediate;
+    
+    
+    records.forEach(element => {
+
+        let tableRecord = document.createElement("tr");
+
+        let recordTime = document.createElement("td");
+        recordTime.textContent = element.time;
+        tableRecord.appendChild(recordTime);
+        
+        let recordClicks = document.createElement("td");
+        recordClicks.textContent = element.clicks;
+        tableRecord.appendChild(recordClicks);
+
+        let recordUsername = document.createElement("td");
+        recordUsername.textContent = element.nickname;
+        tableRecord.appendChild(recordUsername);
+
+        document.getElementById(scoreboard.htmlTableID).appendChild(tableRecord);
+    });
+    
+}
+
+function populateScoreBoards(scoreboardName){
+    let mediumSB = scoreboards.medium;
+    parseSecoreboard(mediumSB);
+    
 }
 
 function clickCard(cardID){
@@ -121,7 +216,6 @@ function updateTimer(intervalStep){
 
 }
 
-
 function endTheGame(){
     window.alert("You won!");
     clearInterval(interval);
@@ -164,8 +258,7 @@ function unflipCards(){
     
 }
 
-
-function createGameBoard(size = 'm', difficulty = 'm'){
+function createGameBoard(size = 'm', difficulty = 'i'){
     //setup game board size
     if (size == 's'){
         GameGrid.style.gridTemplateColumns = "1fr 1fr 1fr";
@@ -191,7 +284,7 @@ function createGameBoard(size = 'm', difficulty = 'm'){
     //set up game difficulty
     let cardIDs = getAllCardIDs();
     let numOfImgs = 0;
-    if(difficulty == 'm'){
+    if(difficulty == 'i'){
         matchesRequired = cardIDs.length/2;
         numOfImgs = cardIDs.length/2;
     }
@@ -217,7 +310,9 @@ function createGameBoard(size = 'm', difficulty = 'm'){
     }
     
 }
-createGameBoard(boardSize, gameDifficulty);
 
+
+createGameBoard(boardSize, gameDifficulty);
 let cardIDs = getAllCardIDs();
 assignOnClickToAllCards(cardIDs);
+populateScoreBoards("mediumBoardScoreboard");

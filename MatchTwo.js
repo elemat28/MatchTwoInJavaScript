@@ -507,7 +507,8 @@ function createGameBoard(size = 'm', difficulty = 'i'){
     }
     else if(difficulty == 'h'){
         let numOfImgsWithoutAPair = numOfCards/3;
-        numOfImgs = cardIDs.length/2+numOfImgsWithoutAPair;
+        numOfImgs = Math.ceil((cardIDs.length-numOfImgsWithoutAPair)/2);
+        matchesRequired = numOfImgs;
     }
 
     //Assign emoji images to each of the cards
@@ -556,7 +557,36 @@ function createGameBoard(size = 'm', difficulty = 'i'){
     }
     }
     else if(difficulty == 'h'){
-        
+        let numOfImgsWithoutAPair = Math.floor(numOfCards/3);
+        let cardsWithoutMatch = getArrayOfEmojis(numOfImgsWithoutAPair);
+        for (let index = 0; index < cardsWithoutMatch.length; index++) {
+            console.log("Assigning Unmatched emoji: '"+ String.fromCodePoint(cardsWithoutMatch[index]) +"' to: ");
+            var cardIndex = Math.floor(Math.random()*cardIDs.length);
+            var tempID = cardIDs[cardIndex];
+            console.log(tempID);
+            document.getElementById(tempID).firstElementChild.textContent = String.fromCodePoint(cardsWithoutMatch[index]);
+            cardIDs.splice(cardIndex, 1);
+        }
+        console.log("numOfNoMatches: " + cardsWithoutMatch.length);
+        console.log("cards left: " + cardIDs.length);
+        console.log("matching emojis (x:2x): " + emojisToUse.length + " : " + emojisToUse.length*2);
+        for (let index = 0; index < emojisToUse.length; index++) {
+            console.log("Assigning emoji: '"+ String.fromCodePoint(emojisToUse[index]) +"' to: ");
+            var cardIndex = Math.floor(Math.random()*cardIDs.length);
+            var tempID = cardIDs[cardIndex];
+            console.log(tempID);
+            document.getElementById(tempID).firstElementChild.textContent = String.fromCodePoint(emojisToUse[index]);
+            cardIDs.splice(cardIndex, 1);
+            cardIndex = Math.floor(Math.random()*cardIDs.length);
+            tempID = cardIDs[cardIndex];
+            console.log("and: ");
+            console.log(tempID);
+            document.getElementById(tempID).firstElementChild.textContent = String.fromCodePoint(emojisToUse[index]);
+            cardIDs.splice(cardIndex, 1);
+            //https://www.delftstack.com/howto/javascript/javascript-pick-random-from-array/#:~:text=Pick%20a%20Random%20Value%20From%20an%20Array%20Using,of%200%20to%20the%20length%20of%20the%20array.
+            
+            
+        }
     }
 }
 

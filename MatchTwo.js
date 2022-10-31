@@ -1,6 +1,6 @@
 console.log("Hello World!");
-let boardSize = 'm'; // s = small, m = medium, l = large
-let gameDifficulty = 'i' //e = easy, i = intermediate, h = hard;
+let boardSize = null; // s = small, m = medium, l = large
+let gameDifficulty = null //e = easy, i = intermediate, h = hard;
 let currentClick = null;
 let firstClicked = null;
 let secondClicked = null;
@@ -155,15 +155,39 @@ let scoreboards = {
     }
 }
 
-let tryGetLocal = localStorage.getItem('scoreboardsArray');
+let tryGetLocal = localStorage.getItem("scoreboardsArray");
 if(tryGetLocal == null) {
     console.log("localStorage not found!");
     console.log("Inserting placeholder scoreboards");
-    localStorage.setItem('scoreboardsArray', JSON.stringify(scoreboards))
+    localStorage.setItem("scoreboardsArray", JSON.stringify(scoreboards))
 } else {
     console.log("localStorage found!");
     console.log("loading storagescoreboard into the system");
-    scoreboards = JSON.parse(localStorage.getItem('scoreboardsArray'));
+    scoreboards = JSON.parse(localStorage.getItem("scoreboardsArray"));
+}
+
+let tryGetSessionBoardSize = sessionStorage.getItem("boardSize");
+if(tryGetSessionBoardSize == null) {
+    console.log("Session BoardSize not found!");
+    console.log("Inserting default");
+    boardSize = 'm';
+    sessionStorage.setItem("boardSize", boardSize)
+} else {
+    console.log("sessionStorage found!");
+    console.log("loading boardSize into the system");
+    boardSize = sessionStorage.getItem("boardSize")
+}
+
+let tryGetSessionGameDifficulty = sessionStorage.getItem("gameDifficulty");
+if(tryGetSessionBoardSize == null) {
+    console.log("Session gameDifficulty not found!");
+    console.log("Inserting default");
+    gameDifficulty = 'i';
+    sessionStorage.setItem("gameDifficulty", gameDifficulty)
+} else {
+    console.log("sessionStorage found!");
+    console.log("loading gameDifficulty into the system");
+    gameDifficulty = sessionStorage.getItem("gameDifficulty");
 }
 
 
@@ -468,9 +492,9 @@ function createGameBoard(size = 'm', difficulty = 'i'){
     }
     for (let index = 0; index < numOfCards; index++) {
         //const element = array[index];
-        let card = document.createElement("card");
+        let card = document.createElement("card-obj");
         card.id = 'C' + index;
-        let cardContent = document.createElement("cardImage");
+        let cardContent = document.createElement("card-image");
         card.appendChild(cardContent);
         GameGrid.appendChild(card);
     }
@@ -505,8 +529,67 @@ function createGameBoard(size = 'm', difficulty = 'i'){
     
 }
 
+function markCurrentlySelectedSettings(){
+    //Mark current board size
+    if(boardSize == 's'){
+        document.getElementById('small').checked = true;
+    }
+    else if(boardSize == 'm'){
+        document.getElementById('medium').checked = true;
+    }
+    else if(boardSize == 'l'){
+        document.getElementById('large').checked = true;
+    }
+    //Mark current difficulty
+    if(gameDifficulty == 'e'){
+        document.getElementById('easy').checked = true;
+    }
+    else if(gameDifficulty == 'i'){
+        document.getElementById('intermediate').checked = true;
+    }
+    else if(gameDifficulty == 'h'){
+        document.getElementById('hard').checked = true;
+    }
+}
+
+function refreshPage(){
+    window.location.reload();
+}
+
+function updateGameSettings(){
+    console.log("updateSettings Triggered");
+    let newSize;
+    if(document.getElementById('small').checked == true){
+        newSize = 's';
+    } else if(document.getElementById('medium').checked == true){
+        newSize = 'm';
+    } else if(document.getElementById('large').checked == true){
+        newSize = 'l';
+    }
+    console.log("newSize: "+ newSize);
+
+    let newDifficulty;
+    if(document.getElementById('easy').checked == true){
+        newDifficulty = 'e';
+    } else if(document.getElementById('intermediate').checked == true){
+        newDifficulty = 'i';
+    } else if(document.getElementById('hard').checked == true){
+        newDifficulty = 'h';
+    }
+    console.log("newDifficulty: "+ newDifficulty);
+    boardSize = newSize;
+    gameDifficulty = newDifficulty;
+    sessionStorage.setItem("boardSize", boardSize);
+    sessionStorage.setItem("gameDifficulty", gameDifficulty);
+    refreshPage();
+}
 
 createGameBoard(boardSize, gameDifficulty);
 let cardIDs = getAllCardIDs();
 assignOnClickToAllCards(cardIDs);
 populateScoreBoards();
+markCurrentlySelectedSettings();
+const reloadButton = document.getElementById("restartButton");
+reloadButton.addEventListener("click", refreshPage, false);
+const applySettings = document.getElementById("applySettings");
+applySettings.addEventListener("click", updateGameSettings, false);

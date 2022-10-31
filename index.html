@@ -11,40 +11,40 @@
     
     <main>
         <h1>Find a Pair</h1>
-        <dashboard>
+        <dashboard-div>
             <h2>
                 Game Dashboard
             </h2>
-            <dashboardFlex>
-                <dashBox id="timerBox">
+            <dashboard-flex>
+                <dash-box id="timerBox">
                     <h3>TIME</h3>
                     <h4>[MM]:[SS]</h4>
                     <p>00:00:00</p>
-                </dashBox>
+                </dash-box>
 
-                <dashBox id="numOfClicksBox">
+                <dash-box id="numOfClicksBox">
                     <h3>CLICKS</h3>
                     <h4>Total this round</h4>
                     <p>0</p>
-                </dashBox>
+                </dash-box>
                 
-                <dashBox>
+                <dash-box>
                     <h3>SIZE</h3>
                     <h4>small/medium/large</h4>
                     <p>Medium</p>
-                </dashBox>
+                </dash-box>
 
-                <dashBox>
+                <dash-box>
                     <h3>DIFFICULTY</h3>
                     <h4>easy/intermediate/hard</h4>
                     <p>Intermediate</p>
-                </dashBox>
-            </dashboardFlex>
-        </dashboard>
+                </dash-box>
+            </dashboard-flex>
+        </dashboard-div>
         <div id="CardGrid">
             <!-- C1 == Card number 1-->
         </div>
-        <scoreboards>
+        <scoreboards-div>
             <div class="scoreBoard">
                 <h3>Small Board</h3>
                 <h4>Easy</h4>
@@ -127,7 +127,40 @@
                 </table>
             </div>
         
-        </scoreboards>
+        </scoreboards-div>
+
+        <div id="settingsMenu">
+            <div class="optionDiv" id="gameplaySettings">
+                <form>
+                    <form-flex>
+                    <fieldset>
+                        <legend>Board size</legend>
+                        <input type="radio" id="small" name="boardSize" value="Small">
+                        <label for="small">Small</label><br>
+                        <input type="radio" id="medium" name="boardSize" value="Medium">
+                        <label for="medium">Medium</label><br>
+                        <input type="radio" id="large" name="boardSize" value="Large">
+                        <label for="large">Large</label>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Game Difficulty</legend>
+                        <input type="radio" id="easy" name="Difficulty" value="Easy">
+                        <label for="easy">Easy</label><br>
+                        <input type="radio" id="intermediate" name="Difficulty" value="Intermediate">
+                        <label for="intermediate">Intermediate</label><br>
+                        <input type="radio" id="hard" name="Difficulty" value="Hard">
+                        <label for="hard">Hard</label>
+                    </fieldset>
+                    
+                    </form-flex>
+                    <button type="button" value="APPLY" id="applySettings">Apply</button>
+                </form>
+            </div>
+
+            <div class="optionDiv" id="restartDiv">
+                <button type="button" value="RESTART" id="restartButton">RESTART</button>
+            </div>
+        </div>
     </main>
     <script src="MatchTwo.js"></script>
 </body>

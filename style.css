@@ -7,7 +7,7 @@ h1 {
     text-align: center;
 }
 
-scoreboards {
+scoreboards-div {
     display: flex;
     justify-content: center;
 }
@@ -33,7 +33,7 @@ scoreboards {
 table {
     width: 100%;
 }
-tdh, td {
+td {
     border: 1px solid #999;
     text-align: center;
 }
@@ -52,17 +52,16 @@ tdh, td {
     
 }
 
-dashboard {
+dashboard-div {
     text-align: center;
     background-color: #1C6EA4;
     color: rgb(0, 0, 0);
     margin: auto;
-    
 
 }
 
 
-dashboardFlex {
+dashboard-flex {
     margin: auto;
     display: flex;
     flex-wrap: wrap;
@@ -70,18 +69,18 @@ dashboardFlex {
     width: 600px;
     
 }
-dashboardFlex h3 {
+dashboard-flex h3 {
     margin-bottom: 0;
 }
 
 
-dashboardFlex h4 {
+dashboard-flex h4 {
     margin: 0;
     font-size: small;
     text-align: center;
     margin-bottom: 0;
 }
-dashboardFlex p {
+dashboard-flex p {
     margin: 0;
     margin-bottom: 1em;
     margin-top:1em;
@@ -89,13 +88,13 @@ dashboardFlex p {
 
 
 
-dashBox {
+dash-box {
     background-color: antiquewhite;
     flex: 1;
 }
 
 
-card {
+card-obj {
     background-color: azure;
     text-align: center;
     font-size: 5em;
@@ -107,7 +106,53 @@ card {
     padding-bottom: 0.2rem;
 }
 
-card cardImage {
+card-obj card-image {
     display: none;
     margin: none;
+}
+
+#settingsMenu {
+    display: flex;
+    flex-direction: column-reverse;
+    width: 50%;
+    background-color: chocolate;
+    margin: auto;
+}
+.optionDiv {
+    flex: 1;
+    text-align: center;
+    
+}
+
+#restartDiv {
+    height: 200px;
+    margin-top: 1.5em;
+    margin-bottom: 3em;
+}
+#restartDiv button {
+    width: 60%;
+    height: 5em;
+}
+
+#gameplaySettings{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#gameplaySettings form-flex{
+    width: 100%;
+    display: flex;
+}
+
+#gameplaySettings form-flex fieldset{
+    width: 75%;
+}
+
+#gameplaySettings form {
+    width: 100%;
+}
+#gameplaySettings form button{
+    width: 75%;
+    height: 2em;
 }

@@ -107,10 +107,9 @@ overflow: hidden;
     color: rgb(0, 0, 0);
     margin: 5% 0;
     min-width: max-content;
-    box-shadow: 3px -5px 15px 3px rgba(0,0,0,0.75);
--webkit-box-shadow: 3px -5px 15px 3px rgba(0,0,0,0.75);
--moz-box-shadow: 3px -5px 15px 3px rgba(0,0,0,0.75);
-
+    -webkit-box-shadow: 3px -5px 15px 3px rgba(0,0,0,0.75);
+    -moz-box-shadow: 3px -5px 15px 3px rgba(0,0,0,0.75);
+box-shadow: 3px -5px 15px 3px rgba(0,0,0,0.75);
 border: 6px inset #008599;
 }
 
@@ -165,7 +164,9 @@ card-obj {
     height: 1em;
     width: -moz-fit-content;
     width: fit-content;
+    height: -moz-fit-content;
     height: fit-content;
+
     border: 4px solid #1C6EA4;
     border-radius: 30%;
     margin: 5% 3%;
@@ -205,10 +206,10 @@ card-obj card-image {
     position: relative;
     z-index: 5;
 bottom: +7px;
-box-shadow: 5px 5px 10px 3px rgba(255,0,106,0.29);
+
 -webkit-box-shadow: 5px 5px 10px 3px rgba(255,0,106,0.29);
 -moz-box-shadow: 5px 5px 10px 3px rgba(255,0,106,0.29);
-
+box-shadow: 5px 5px 10px 3px rgba(255,0,106,0.29);
 -webkit-border-radius: 0px 0px 38px 38px;
 -moz-border-radius: 0px 0px 38px 38px;
 border-radius: 0px 0px 38px 38px;
@@ -225,10 +226,10 @@ border-right: 10px ridge rgba(126,0,77,0.68);
 border-bottom: 10px groove rgba(126,0,77,0.68);
 border-left: 10px groove rgba(126,0,77,0.68);
 z-index: 3;
-border-radius: 0px 0px 38px 38px;
+
 -webkit-border-radius: 0px 0px 38px 38px;
 -moz-border-radius: 0px 0px 38px 38px;
-
+border-radius: 0px 0px 38px 38px;
 }
 
 #gameplaySettings{

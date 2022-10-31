@@ -238,7 +238,6 @@ function populateScoreBoards(){
 }
 
 function clickCard(cardID){
-    console.log(getCurrentLeaderboard());
     //ignore the click if card already facing up
     if(document.getElementById(cardID).firstChild.style.display == "inline"){
         return;
@@ -357,10 +356,10 @@ function getCurrentLeaderboard(){
     } else if(boardSize == 'm') {
         leaderboard = scoreboards.medium;
     } else if(boardSize == 'l') {
-        leaderboard == scoreboards.large;
+        leaderboard = scoreboards.large;
     }
     else {return null}
-
+    console.log(leaderboard);
     if (gameDifficulty == 'e') {
         return leaderboard.easy;
     } else if (gameDifficulty == 'i'){
@@ -378,8 +377,6 @@ function addToLeaderboard(leaderboard, index, time, clicks, name){
         clicks: clicks,
         nickname: name
     }
-    console.log("PRe error");
-    console.log(leaderboard);
     leaderboard.records.splice(index, 0, newRecord);
     if(leaderboard.records.length > numberOfScoresToKeep){
         leaderboard.recordClicks = leaderboard.slice(0,numberOfScoresToKeep);
@@ -415,7 +412,6 @@ function addToLeaderboard(leaderboard, index, time, clicks, name){
             }
     }
     console.log("got to end of add to leaderboard");
-    console.log(scoreboards);
     localStorage.setItem('scoreboardsArray', JSON.stringify(scoreboards));
 }
 
@@ -431,8 +427,6 @@ function endTheGame(){
         }
     console.log("running add to scoreboard");
     addToLeaderboard(getCurrentLeaderboard(), newIndex, gameTime, clicksThisRound, userName);
-    console.log("result:")
-    console.log(scoreboards);
 } else{
     window.alert("You won!");
     }
@@ -491,24 +485,58 @@ function createGameBoard(size = 'm', difficulty = 'i'){
         numOfCards = 20;
     }
     for (let index = 0; index < numOfCards; index++) {
-        //const element = array[index];
         let card = document.createElement("card-obj");
         card.id = 'C' + index;
         let cardContent = document.createElement("card-image");
         card.appendChild(cardContent);
         GameGrid.appendChild(card);
     }
-
+    console.log("difficulty "+difficulty);
     //set up game difficulty
     let cardIDs = getAllCardIDs();
-    let numOfImgs = 0;
-    if(difficulty == 'i'){
+    let numOfImgs;
+    if(difficulty == 'e'){
+        matchesRequired = cardIDs.length/2;
+        console.log("Matches required: "+matchesRequired);
+        numOfImgs = Math.ceil((matchesRequired)/2);
+        console.log("numOfImgs required: "+numOfImgs);
+    }
+    else if(difficulty == 'i'){
         matchesRequired = cardIDs.length/2;
         numOfImgs = cardIDs.length/2;
     }
+    else if(difficulty == 'h'){
+        let numOfImgsWithoutAPair = numOfCards/3;
+        numOfImgs = cardIDs.length/2+numOfImgsWithoutAPair;
+    }
+
     //Assign emoji images to each of the cards
     let emojisToUse = getArrayOfEmojis(numOfImgs);
-    
+    if(difficulty == 'e'){
+        
+        for (let emojiIndex = 0; emojiIndex < emojisToUse.length; emojiIndex++) {
+            console.log("Matches required"+matchesRequired);
+            let numOfCardPerEmoji = Math.ceil(matchesRequired/emojisToUse.length)*2;
+            if((numOfCardPerEmoji%2)>0){
+                numOfCardPerEmoji++;
+            }
+            for(cardIndexer = 0; cardIndexer < numOfCardPerEmoji; cardIndexer++){
+                if(cardIDs.length > 0){
+                    console.log("Assigning emoji: '"+ String.fromCodePoint(emojisToUse[emojiIndex]) +"' to: ");
+                var cardIndex = Math.floor(Math.random()*cardIDs.length);
+                var tempID = cardIDs[cardIndex];
+                console.log(tempID);
+                document.getElementById(tempID).firstElementChild.textContent = String.fromCodePoint(emojisToUse[emojiIndex]);
+                cardIDs.splice(cardIndex, 1);
+                } else {
+                    break;
+                }
+            }
+
+            
+        }
+    }
+    else if(difficulty == 'i'){
     for (let index = 0; index < emojisToUse.length; index++) {
         console.log("Assigning emoji: '"+ String.fromCodePoint(emojisToUse[index]) +"' to: ");
         var cardIndex = Math.floor(Math.random()*cardIDs.length);
@@ -526,29 +554,41 @@ function createGameBoard(size = 'm', difficulty = 'i'){
         
         
     }
-    
+    }
+    else if(difficulty == 'h'){
+        
+    }
 }
 
 function markCurrentlySelectedSettings(){
     //Mark current board size
     if(boardSize == 's'){
         document.getElementById('small').checked = true;
+        document.getElementById("boardSizeBox").lastElementChild.textContent="Small";
     }
     else if(boardSize == 'm'){
         document.getElementById('medium').checked = true;
+        document.getElementById("boardSizeBox").lastElementChild.textContent="Medium";
+    
     }
     else if(boardSize == 'l'){
         document.getElementById('large').checked = true;
+        document.getElementById("boardSizeBox").lastElementChild.textContent="Large";
+    
     }
     //Mark current difficulty
     if(gameDifficulty == 'e'){
         document.getElementById('easy').checked = true;
-    }
+        document.getElementById("difficultyBox").lastElementChild.textContent="Easy";
+    }   
     else if(gameDifficulty == 'i'){
         document.getElementById('intermediate').checked = true;
+        document.getElementById("difficultyBox").lastElementChild.textContent="Intermediate";
     }
     else if(gameDifficulty == 'h'){
         document.getElementById('hard').checked = true;
+        document.getElementById("difficultyBox").lastElementChild.textContent="Hard";
+    
     }
 }
 

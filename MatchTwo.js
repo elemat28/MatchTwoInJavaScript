@@ -239,7 +239,7 @@ function populateScoreBoards(){
 
 function clickCard(cardID){
     //ignore the click if card already facing up
-    if(document.getElementById(cardID).firstChild.style.display == "inline"){
+    if(document.getElementById(cardID).firstChild.style.opacity == "1"){
         return;
     }
 
@@ -256,7 +256,8 @@ function clickCard(cardID){
     }
     currentClick = cardID;
     let element = document.getElementById(cardID);
-    element.firstChild.style.display = "inline";
+    element.firstChild.style.opacity = "1";
+    //element.style.boxShadow = "1px 5px 11px 13px rgba(0,0,0,0.27)";
     console.log("Currently clicked ID: " + document.getElementById(cardID).id);
     if(firstClicked == null){
         firstClicked = currentClick;
@@ -464,8 +465,11 @@ function assignOnClickToAllCards(cardIDs){
 }
 
 function unflipCards(){
-    document.getElementById(firstClicked).firstChild.style.display = "none";
-    document.getElementById(secondClicked).firstChild.style.display = "none";
+    let firstCard = document.getElementById(firstClicked);
+    let secondCard = document.getElementById(secondClicked);
+    firstCard.firstChild.style.opacity = "0";
+    secondCard.firstChild.style.opacity = "0";
+
     firstClicked = secondClicked = null;
     
 }
@@ -524,8 +528,8 @@ function createGameBoard(size = 'm', difficulty = 'i'){
             for(cardIndexer = 0; cardIndexer < numOfCardPerEmoji; cardIndexer++){
                 if(cardIDs.length > 0){
                     console.log("Assigning emoji: '"+ String.fromCodePoint(emojisToUse[emojiIndex]) +"' to: ");
-                var cardIndex = Math.floor(Math.random()*cardIDs.length);
-                var tempID = cardIDs[cardIndex];
+                let cardIndex = Math.floor(Math.random()*cardIDs.length);
+                let tempID = cardIDs[cardIndex];
                 console.log(tempID);
                 document.getElementById(tempID).firstElementChild.textContent = String.fromCodePoint(emojisToUse[emojiIndex]);
                 cardIDs.splice(cardIndex, 1);
@@ -540,8 +544,8 @@ function createGameBoard(size = 'm', difficulty = 'i'){
     else if(difficulty == 'i'){
     for (let index = 0; index < emojisToUse.length; index++) {
         console.log("Assigning emoji: '"+ String.fromCodePoint(emojisToUse[index]) +"' to: ");
-        var cardIndex = Math.floor(Math.random()*cardIDs.length);
-        var tempID = cardIDs[cardIndex];
+        let cardIndex = Math.floor(Math.random()*cardIDs.length);
+        let tempID = cardIDs[cardIndex];
         console.log(tempID);
         document.getElementById(tempID).firstElementChild.textContent = String.fromCodePoint(emojisToUse[index]);
         cardIDs.splice(cardIndex, 1);
@@ -561,8 +565,8 @@ function createGameBoard(size = 'm', difficulty = 'i'){
         let cardsWithoutMatch = getArrayOfEmojis(numOfImgsWithoutAPair);
         for (let index = 0; index < cardsWithoutMatch.length; index++) {
             console.log("Assigning Unmatched emoji: '"+ String.fromCodePoint(cardsWithoutMatch[index]) +"' to: ");
-            var cardIndex = Math.floor(Math.random()*cardIDs.length);
-            var tempID = cardIDs[cardIndex];
+            let cardIndex = Math.floor(Math.random()*cardIDs.length);
+            let tempID = cardIDs[cardIndex];
             console.log(tempID);
             document.getElementById(tempID).firstElementChild.textContent = String.fromCodePoint(cardsWithoutMatch[index]);
             cardIDs.splice(cardIndex, 1);
@@ -572,8 +576,8 @@ function createGameBoard(size = 'm', difficulty = 'i'){
         console.log("matching emojis (x:2x): " + emojisToUse.length + " : " + emojisToUse.length*2);
         for (let index = 0; index < emojisToUse.length; index++) {
             console.log("Assigning emoji: '"+ String.fromCodePoint(emojisToUse[index]) +"' to: ");
-            var cardIndex = Math.floor(Math.random()*cardIDs.length);
-            var tempID = cardIDs[cardIndex];
+            let cardIndex = Math.floor(Math.random()*cardIDs.length);
+            let tempID = cardIDs[cardIndex];
             console.log(tempID);
             document.getElementById(tempID).firstElementChild.textContent = String.fromCodePoint(emojisToUse[index]);
             cardIDs.splice(cardIndex, 1);

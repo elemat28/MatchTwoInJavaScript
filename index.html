@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +13,9 @@
 <body>
     
     <main>
+        <div id="titleBar">
         <h1>Find a Pair</h1>
+        </div>
         <dashboard-div>
             <h2>
                 Game Dashboard
@@ -44,6 +49,39 @@
         <div id="CardGrid">
             <!-- C1 == Card number 1-->
         </div>
+        <div class="optionDiv" id="restartDiv">
+            <button type="button" value="RESTART" id="restartButton">RESTART</button>
+        </div>
+        <div id="settingsMenu">
+            <div class="optionDiv" id="gameplaySettings">
+                <form>
+                    <form-flex>
+                    <fieldset>
+                        <legend>Board size</legend>
+                        <input type="radio" id="small" name="boardSize" value="Small">
+                        <label for="small">Small</label><br>
+                        <input type="radio" id="medium" name="boardSize" value="Medium">
+                        <label for="medium">Medium</label><br>
+                        <input type="radio" id="large" name="boardSize" value="Large">
+                        <label for="large">Large</label>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Game Difficulty</legend>
+                        <input type="radio" id="easy" name="Difficulty" value="Easy">
+                        <label for="easy">Easy</label><br>
+                        <input type="radio" id="intermediate" name="Difficulty" value="Intermediate">
+                        <label for="intermediate">Intermediate</label><br>
+                        <input type="radio" id="hard" name="Difficulty" value="Hard">
+                        <label for="hard">Hard</label>
+                    </fieldset>
+                    
+                    </form-flex>
+                    <button type="button" value="APPLY" id="applySettings">Apply</button>
+                </form>
+            </div>
+
+            
+        </div>
         <scoreboards-div>
             <div class="scoreBoard">
                 <h3>Small Board</h3>
@@ -72,6 +110,7 @@
                     </tr>
                 </table>
             </div>
+            
             <div class="scoreBoard">
                 <h3>Medium board</h3>
                 <h4>Easy</h4>
@@ -129,38 +168,7 @@
         
         </scoreboards-div>
 
-        <div id="settingsMenu">
-            <div class="optionDiv" id="gameplaySettings">
-                <form>
-                    <form-flex>
-                    <fieldset>
-                        <legend>Board size</legend>
-                        <input type="radio" id="small" name="boardSize" value="Small">
-                        <label for="small">Small</label><br>
-                        <input type="radio" id="medium" name="boardSize" value="Medium">
-                        <label for="medium">Medium</label><br>
-                        <input type="radio" id="large" name="boardSize" value="Large">
-                        <label for="large">Large</label>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Game Difficulty</legend>
-                        <input type="radio" id="easy" name="Difficulty" value="Easy">
-                        <label for="easy">Easy</label><br>
-                        <input type="radio" id="intermediate" name="Difficulty" value="Intermediate">
-                        <label for="intermediate">Intermediate</label><br>
-                        <input type="radio" id="hard" name="Difficulty" value="Hard">
-                        <label for="hard">Hard</label>
-                    </fieldset>
-                    
-                    </form-flex>
-                    <button type="button" value="APPLY" id="applySettings">Apply</button>
-                </form>
-            </div>
-
-            <div class="optionDiv" id="restartDiv">
-                <button type="button" value="RESTART" id="restartButton">RESTART</button>
-            </div>
-        </div>
+        
     </main>
     <script src="MatchTwo.js"></script>
 </body>
